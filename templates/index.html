@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Para a Ana</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>O Nosso Cantinho</h1>
+        
+        <h3>Uma de nossas trilhas sonoras:</h3>
+        <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/track/7Elw15XWLpOi4qzHyAwa9e?utm_source=generator" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        
+        <hr>
+
+        <div class="imagem-destaque" id="carrossel-fotos">
+            <h3>Nós</h3>
+            
+            <div class="carrossel-container">
+                <img src="{{ url_for('static', filename='nossa-foto-1.jpg') }}" alt="Nós dois" id="foto-atual" class="foto-casal">
+                <button class="seta anterior" onclick="mudarFoto(-1)">&#10094;</button> 
+                <button class="seta proxima" onclick="mudarFoto(1)">&#10095;</button> 
+            </div>
+            
+            <div class="indicadores">
+                <span class="ponto ativo" onclick="irParaFoto(0)"></span> 
+                <span class="ponto" onclick="irParaFoto(1)"></span>       
+                <span class="ponto" onclick="irParaFoto(2)"></span>       
+                <span class="ponto" onclick="irParaFoto(3)"></span>       
+                <span class="ponto" onclick="irParaFoto(4)"></span>       
+                <span class="ponto" onclick="irParaFoto(5)"></span>       
+            </div>
+        </div>
+
+        <div class="contadores">
+            <div class="contador-box">
+                <h3>⏳ Nos conhecemos há:</h3>
+                <p><strong>{{ horas_conhecemos }}</strong> horas</p>
+            </div>
+            <div class="contador-box">
+                <h3>💋 O 1º beijo foi há:</h3>
+                <p><strong>{{ horas_beijo }}</strong> horas</p>
+            </div>
+        </div>
+
+        <hr>
+
+        <h3>Nosso Próximo Rolê</h3>
+        <p>Onde vamos criar nossa próxima memória?</p>
+        <button id="botao-surpresa">Sortear Rolê</button>
+        <div id="resultado"></div>
+        <img id="imagem-role" src="" alt="Imagem do rolê sorteado" style="display: none;">
+
+        <hr>
+
+        <button id="botao-namorados" style="background-color: #5c0f4c; margin-top: 25px; width: 100%;">
+            Surpresa do Dia dos Namorados 🔒
+        </button>
+    </div>
+
+    <script>
+        // --- LÓGICA DO CARROSSEL DE FOTOS ---
+        const listaFotos = [
+            "/static/nossa-foto-1.jpg",
+            "/static/nossa-foto-2.jpg",
+            "/static/nossa-foto-3.jpg",
+            "/static/nossa-foto-4.jpg",
+            "/static/nossa-foto-5.jpg",
+            "/static/nossa-foto-6.jpg" 
+        ];
+
+        let indexAtual = 0; 
+        const elementoFoto = document.getElementById('foto-atual');
+        const pontos = document.getElementsByClassName('ponto');
+
+        function mudarFoto(direcao) {
+            indexAtual = (indexAtual + direcao + listaFotos.length) % listaFotos.length;
+            atualizarExibicao();
+        }
+
+        function irParaFoto(novoIndex) {
+            indexAtual = novoIndex;
+            atualizarExibicao();
+        }
+
+        function atualizarExibicao() {
+            elementoFoto.src = listaFotos[indexAtual];
+            for (let i = 0; i < pontos.length; i++) {
+                pontos[i].classList.remove('ativo');
+            }
+            if (pontos[indexAtual]) {
+                pontos[indexAtual].classList.add('ativo');
+            }
+        }
+
+        // --- LÓGICA DA ROLETA DE ROLÊS ---
+        const botaoSurpresa = document.getElementById('botao-surpresa');
+        const resultado = document.getElementById('resultado');
+        const listaRoles = {{ roles | tojson }}; 
+        let roletaInterval;
+
+        botaoSurpresa.addEventListener('click', function() {
+            botaoSurpresa.disabled = true;
+            resultado.classList.remove('vencedor'); 
+            const imgRole = document.getElementById('imagem-role');
+            imgRole.style.display = "none"; // Esconde a foto enquanto gira
+
+            roletaInterval = setInterval(() => {
+                let roleAleatorio = listaRoles[Math.floor(Math.random() * listaRoles.length)];
+                resultado.innerText = "🔄 " + roleAleatorio;
+            }, 100);
+
+            fetch('/sortear')
+                .then(resposta => resposta.json())
+                .then(dados => {
+                    setTimeout(() => {
+                        clearInterval(roletaInterval); 
+                        resultado.innerText = "🎉 " + dados.role_sorteado; 
+                        resultado.classList.add('vencedor'); 
+                        
+                        imgRole.src = "/static/" + dados.imagem_sorteada;
+                        imgRole.style.display = "block"; // Faz a foto aparecer!
+                        
+                        botaoSurpresa.disabled = false; 
+                    }, 2000);
+                });
+        });
+
+        // --- LÓGICA DO COFRE DO DIA DOS NAMORADOS ---
+        const botaoNamorados = document.getElementById('botao-namorados');
+        botaoNamorados.addEventListener('click', function() {
+            const hoje = new Date();
+            const dataLiberacao = new Date(2026, 5, 12, 0, 0, 0); 
+
+            if (hoje < dataLiberacao) {
+                alert("Apressadinha! 😅 Esse cofre está trancado a 7 chaves e só vai abrir no Dia dos Namorados.");
+            } else {
+                alert("Feliz Dia dos Namorados, Ana! ❤️ [Aqui você poderá colocar uma declaração linda!]");
+            }
+        });
+    </script>
+</body>
+</html>
