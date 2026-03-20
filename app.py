@@ -34,8 +34,8 @@ def home():
     nomes_roles = [role['nome'] for role in futuros_roles]
 
     return render_template('index.html', 
-                            horas_conhecemos=horas_conhecemos, 
-                            horas_beijo=horas_beijo,
+                            dias_conhecemos=dias_conhecemos, 
+                            dias_beijo=dias_beijo,
                             roles=nomes_roles)
 
 @app.route('/sortear')
