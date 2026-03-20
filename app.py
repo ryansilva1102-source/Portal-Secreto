@@ -5,12 +5,12 @@ from datetime import datetime
 app = Flask(__name__)
 
 futuros_roles = [
-    {"nome": "Piquenique e caminhada no Ibirapuera 🌳☀️", "imagem": "role-ibira.jpg"},
-    {"nome": "Explorar um restaurante novo em São Paulo 🍝🍷", "imagem": "role-restaurante.jpg"},
-    {"nome": "Ida ao cinema com namoradeira em São Paulo 🍿🎥", "imagem": "role-cinema.jpg"},
-    {"nome": "Passeio de domingo na Avenida Paulista com direito a sorvete 🍦🏙️", "imagem": "role-paulista.jpg"},
-    {"nome": "Noite de boliche ou fliperama para ver quem ganha 🎳👾", "imagem": "role-jogos.jpg"},
-    {"nome": "Passar a tarde a passear na Liberdade e provar várias comidas diferentes 🏮🍡", "imagem": "role-liberdade.jpg"} # <-- A sua escolha com texto natural!
+    {"nome": "Piquenique e caminhada no Ibirapuera", "imagem": "role-ibira.jpg"},
+    {"nome": "Explorar um restaurante novo em São Paulo", "imagem": "role-restaurante.jpg"},
+    {"nome": "Ida ao cinema com namoradeira em São Paulo", "imagem": "role-cinema.jpg"},
+    {"nome": "Passeio de domingo na Avenida Paulista", "imagem": "role-paulista.jpg"},
+    {"nome": "Noite de boliche ou fliperama", "imagem": "role-jogos.jpg"},
+    {"nome": "Passar a tarde a passear na Liberdade e provar várias comidas diferentes", "imagem": "role-liberdade.jpg"} # <-- A sua escolha com texto natural!
 ]
 @app.route('/')
 def home():
