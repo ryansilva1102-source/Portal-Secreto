@@ -14,19 +14,22 @@ futuros_roles = [
 ]
 @app.route('/')
 def home():
-   # Ajuste a data em que se conheceram (2 de Novembro de 2025)
-        data_conhecemos = datetime(2025, 11, 2, 0, 0, 0) 
-        
-        # Ajuste a data do primeiro beijo no bloquinho (14 de Fevereiro de 2026)
-        data_beijo = datetime(2026, 2, 14, 0, 0, 0)
+    # Ajuste a data em que se conheceram
+    data_conhecemos = datetime(2025, 11, 2, 0, 0, 0)
+    
+    # Ajuste a data do primeiro beijo
+    data_beijo = datetime(2026, 2, 14, 0, 0, 0)
 
-        agora = datetime.now()
-        diferenca_conhecemos = agora - data_conhecemos
-        diferenca_beijo = agora - data_beijo
+    agora = datetime.now()
+    
+    diferenca_conhecemos = agora - data_conhecemos
+    diferenca_beijo = agora - data_beijo
 
-        horas_conhecemos = int(diferenca_conhecemos.total_seconds() / 3600)
-        horas_beijo = int(diferenca_beijo.total_seconds() / 3600)
-
+    # Usando o atributo .days para pegar apenas o número de dias inteiros
+    dias_conhecemos = diferenca_conhecemos.days
+    dias_beijo = diferenca_beijo.days
+    
+    # Agora você passa 'dias_conhecemos' e 'dias_beijo' para o seu template HTML
     # Extraímos só os nomes para a roleta girar no visual
         nomes_roles = [role['nome'] for role in futuros_roles]
 
